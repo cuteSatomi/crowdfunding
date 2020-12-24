@@ -112,6 +112,7 @@
                 <artifactId>jul-to-slf4j</artifactId>
                 <version>1.7.25</version>
             </dependency>
+
             <!-- Spring 进行 JSON 数据转换依赖 -->
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
