@@ -2,15 +2,17 @@ package com.zzx.crowd.test;
 
 import com.zzx.crowd.entity.Admin;
 import com.zzx.crowd.mapper.AdminMapper;
+import com.zzx.crowd.service.api.AdminService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.SQLException;
 
 /**
@@ -19,7 +21,7 @@ import java.sql.SQLException;
  */
 //在类上标记必要的注解，spring整合junit
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:spring-persist-mybatis.xml"})
+@ContextConfiguration(locations = {"classpath:spring-persist-mybatis.xml","classpath:spring-persist-tx.xml"})
 public class CrowdTest {
 
     @Resource
@@ -27,6 +29,38 @@ public class CrowdTest {
 
     @Resource
     private AdminMapper adminMapper;
+
+    @Resource
+    private AdminService adminService;
+
+    @Test
+    public void testTx(){
+        Admin admin = new Admin(null, "wll", "456", "武老赖", "wll@mgbd.com", null);
+        adminService.saveAdmin(admin);
+    }
+
+    @Test
+    public void testLog(){
+        // 获取logger对象
+        Logger logger = LoggerFactory.getLogger(CrowdTest.class);
+
+        // 根据不同的日志级别打印日志
+        logger.debug("debug level!!!");
+        logger.debug("debug level!!!");
+        logger.debug("debug level!!!");
+
+        logger.info("info level!!!");
+        logger.info("info level!!!");
+        logger.info("info level!!!");
+
+        logger.warn("warn level!!!");
+        logger.warn("warn level!!!");
+        logger.warn("warn level!!!");
+
+        logger.error("error level!!!");
+        logger.error("error level!!!");
+        logger.error("error level!!!");
+    }
 
     @Test
     public void testInsertAdmin() {
