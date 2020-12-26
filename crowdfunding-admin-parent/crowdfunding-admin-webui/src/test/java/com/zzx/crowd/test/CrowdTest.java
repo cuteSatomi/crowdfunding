@@ -16,8 +16,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
- * @Author zzx
- * @Date 2020-12-24 20:57
+ * @author zzx
+ * @date 2020-12-24 20:57
  */
 //在类上标记必要的注解，spring整合junit
 @RunWith(SpringJUnit4ClassRunner.class)

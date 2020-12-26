@@ -1,10 +1,13 @@
 package com.zzx.crowd.service.impl;
 
 import com.zzx.crowd.entity.Admin;
+import com.zzx.crowd.entity.AdminExample;
 import com.zzx.crowd.mapper.AdminMapper;
 import com.zzx.crowd.service.api.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author zzx
@@ -16,7 +19,15 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     private AdminMapper adminMapper;
 
+    @Override
     public void saveAdmin(Admin admin) {
         adminMapper.insert(admin);
     }
+
+    @Override
+    public List<Admin> listAll() {
+        return adminMapper.selectByExample(new AdminExample());
+    }
+
+
 }

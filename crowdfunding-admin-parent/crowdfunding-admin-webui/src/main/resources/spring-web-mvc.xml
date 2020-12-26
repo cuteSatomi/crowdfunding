@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+             http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+             http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <!-- 配置自动扫描的包：扫描controller -->
+    <context:component-scan base-package="com.zzx.crowd.mvc.controller"/>
+
+    <!-- 配置SpringMVC的注解驱动 -->
+    <mvc:annotation-driven/>
+
+    <!-- 配置视图解析器 -->
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!-- 将JSP放到WEB-INF下 -->
+        <property name="prefix" value="/WEB-INF/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!-- 配置基于XML的异常映射 -->
+    <bean id="simpleMappingExceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <!-- 配置异常的类型以及具体页面的对应关系 -->
+        <property name="exceptionMappings">
+            <props>
+                <!-- key指定异常全限定类名，标签体内是对应的视图(相应的前后缀看上面配置的视图解析器) -->
+                <prop key="java.lang.Exception">system-error</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- 配置view-controller，把请求地址和视图名称关联起来 -->
+    <!--
+            @RequestMapping("admin/to/login.html")
+            public String toLoginPage(){
+                return "admin-login";
+            }
+    -->
+    <mvc:view-controller path="admin/to/login/page.html" view-name="admin-login"/>
+</beans>
