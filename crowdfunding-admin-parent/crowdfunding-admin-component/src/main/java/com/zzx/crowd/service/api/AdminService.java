@@ -21,4 +21,6 @@ public interface AdminService {
      * @return 管理员的集合
      */
     List<Admin> listAll();
+
+    Admin getAdminByLoginAcct(String loginAcct, String userPswd);
 }

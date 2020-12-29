@@ -2,6 +2,7 @@ package com.zzx.crowd.mvc.config;
 
 import com.google.gson.Gson;
 import com.zzx.crowd.constant.CrowdConstant;
+import com.zzx.crowd.exception.LoginFailedException;
 import com.zzx.crowd.util.CrowdUtil;
 import com.zzx.crowd.util.ResultEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -21,9 +22,9 @@ import java.io.IOException;
 @ControllerAdvice
 public class CrowdExceptionResolver {
 
-    @ExceptionHandler(value = ArithmeticException.class)
+    @ExceptionHandler(value = LoginFailedException.class)
     public ModelAndView resolveLoginFailedException(
-            ArithmeticException exception,
+            LoginFailedException exception,
             HttpServletRequest request,
             HttpServletResponse response
     ) throws IOException {
