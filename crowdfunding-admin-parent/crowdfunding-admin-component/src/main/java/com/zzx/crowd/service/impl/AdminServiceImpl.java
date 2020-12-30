@@ -1,5 +1,7 @@
 package com.zzx.crowd.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.zzx.crowd.constant.CrowdConstant;
 import com.zzx.crowd.entity.Admin;
 import com.zzx.crowd.entity.AdminExample;
@@ -74,6 +76,17 @@ public class AdminServiceImpl implements AdminService {
 
         // 结果一致返回Admin对象
         return admin;
+    }
+
+    @Override
+    public PageInfo<Admin> getPageInfo(String keyword, Integer pageNum, Integer pageSize) {
+        // 调用PageHelper的静态方法开启分页功能
+        // 这里体现了PageHelper的非侵入式设计，原本的查询不需要做任何改动
+        PageHelper.startPage(pageNum, pageSize);
+        // 执行查询
+        List<Admin> list = adminMapper.selectAdminByKeyword(keyword);
+        // 将list封装到PageInfo中返回，list是PageInfo中的一个成员变量
+        return new PageInfo<>(list);
     }
 
 

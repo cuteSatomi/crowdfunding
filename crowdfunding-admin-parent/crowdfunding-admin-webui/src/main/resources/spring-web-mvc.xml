@@ -10,7 +10,7 @@
     <!-- 配置自动扫描的包：扫描controller -->
     <!--
         这里出现一个问题 之前把包扫描路径配错了，配成了base-package="com.zzx.crowd.mvc.controller"
-        导致了cnfig包下的CrowdExceptionResolver自定义异常处理器的注解失效了，所以登录失败直接跳转到错误页面了，
+        导致了config包下的CrowdExceptionResolver自定义异常处理器的注解失效了，所以登录失败直接跳转到错误页面了，
         没有走CrowdExceptionResolver.resolveLoginFailedException这个方法回到admin-login
     -->
     <context:component-scan base-package="com.zzx.crowd.mvc"/>
@@ -32,6 +32,8 @@
             <props>
                 <!-- key指定异常全限定类名，标签体内是对应的视图(相应的前后缀看上面配置的视图解析器) -->
                 <prop key="java.lang.Exception">system-error</prop>
+                <!-- 配置拦截器中抛出的拒绝访问异常，并将其转发到登录页面 -->
+                <prop key="com.zzx.crowd.exception.AccessForbiddenException">admin-login</prop>
             </props>
         </property>
     </bean>
@@ -44,4 +46,18 @@
             }
     -->
     <mvc:view-controller path="admin/to/login/page.html" view-name="admin-login"/>
+    <mvc:view-controller path="admin/to/main/page.html" view-name="admin-main"/>
+    
+    <!-- 将拦截器注册进spring容器 -->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <!-- 拦截所有路径 -->
+            <mvc:mapping path="/**"/>
+            <!-- 去登陆页面、登录的操作以及退出登录不需要拦截 -->
+            <mvc:exclude-mapping path="/admin/to/login/page.html"/>
+            <mvc:exclude-mapping path="/admin/do/login.html"/>
+            <mvc:exclude-mapping path="/admin/do/logout.html"/>
+            <bean class="com.zzx.crowd.mvc.interceptor.LoginInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
 </beans>

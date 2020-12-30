@@ -2,6 +2,7 @@ package com.zzx.crowd.mvc.config;
 
 import com.google.gson.Gson;
 import com.zzx.crowd.constant.CrowdConstant;
+import com.zzx.crowd.exception.AccessForbiddenException;
 import com.zzx.crowd.exception.LoginFailedException;
 import com.zzx.crowd.util.CrowdUtil;
 import com.zzx.crowd.util.ResultEntity;
@@ -22,6 +23,32 @@ import java.io.IOException;
 @ControllerAdvice
 public class CrowdExceptionResolver {
 
+    /**
+     * 未登录状态下访问受保护资源产生的异常处理
+     * @param exception
+     * @param request
+     * @param response
+     * @return
+     * @throws IOException
+     */
+    @ExceptionHandler(value = AccessForbiddenException.class)
+    public ModelAndView resolveAccessForbiddenException(
+            AccessForbiddenException exception,
+            HttpServletRequest request,
+            HttpServletResponse response) throws IOException {
+        String viewName = "admin-login";
+        return commonResolve(viewName, exception, request, response);
+    }
+
+    /**
+     * 登录失败的异常处理
+     *
+     * @param exception
+     * @param request
+     * @param response
+     * @return 转发到登录页面
+     * @throws IOException
+     */
     @ExceptionHandler(value = LoginFailedException.class)
     public ModelAndView resolveLoginFailedException(
             LoginFailedException exception,
@@ -37,15 +64,15 @@ public class CrowdExceptionResolver {
     /**
      * ExceptionHandler表示将一个具体的异常类型和方法关联起来
      *
-     * @param targetViewName 要去的页面
-     * @param exception 拦截到的异常
-     * @param request 当前请求对象
-     * @param response 当前响应对象
+     * @param viewName 要去的页面
+     * @param exception      拦截到的异常
+     * @param request        当前请求对象
+     * @param response       当前响应对象
      * @return
      */
     //@ExceptionHandler(value = NullPointerException.class)
-    public ModelAndView commonResolve(String targetViewName,Exception exception, HttpServletRequest request,
-                                                    HttpServletResponse response) throws IOException {
+    public ModelAndView commonResolve(String viewName, Exception exception, HttpServletRequest request,
+                                      HttpServletResponse response) throws IOException {
         // 判断请求类型，是否是ajax请求
         boolean isAjax = CrowdUtil.isAjaxRequest(request);
         if (isAjax) {
@@ -61,8 +88,8 @@ public class CrowdExceptionResolver {
 
         // 如果不是ajax请求，返回ModelAndView
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject(CrowdConstant.ATTR_NAME_EXCEPTION,exception);
-        modelAndView.setViewName(targetViewName);
+        modelAndView.addObject(CrowdConstant.ATTR_NAME_EXCEPTION, exception);
+        modelAndView.setViewName(viewName);
         return modelAndView;
     }
 }
