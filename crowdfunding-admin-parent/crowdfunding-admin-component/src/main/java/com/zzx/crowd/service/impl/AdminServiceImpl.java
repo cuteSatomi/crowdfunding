@@ -5,13 +5,18 @@ import com.github.pagehelper.PageInfo;
 import com.zzx.crowd.constant.CrowdConstant;
 import com.zzx.crowd.entity.Admin;
 import com.zzx.crowd.entity.AdminExample;
+import com.zzx.crowd.exception.LoginAcctAlreadyExistException;
+import com.zzx.crowd.exception.LoginAcctAlreadyExistForUpdateException;
 import com.zzx.crowd.exception.LoginFailedException;
 import com.zzx.crowd.mapper.AdminMapper;
 import com.zzx.crowd.service.api.AdminService;
 import com.zzx.crowd.util.CrowdUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -27,7 +32,23 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void saveAdmin(Admin admin) {
-        adminMapper.insert(admin);
+        // 密码加密
+        admin.setUserPswd(CrowdUtil.md5(admin.getUserPswd()));
+
+        // 设置创建时间
+        Date date = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String createTime = format.format(date);
+        admin.setCreateTime(createTime);
+        // 插入数据可能会产生异常，需要catch一下自己处理
+        try {
+            adminMapper.insert(admin);
+        } catch (Exception e) {
+            // 如果是DuplicateKeyException异常，则抛出自定义的LoginAcctAlreadyExistException
+            if (e instanceof DuplicateKeyException) {
+                throw new LoginAcctAlreadyExistException(CrowdConstant.MESSAGE_LOGIN_ACCOUNT_ALREADY_EXIST);
+            }
+        }
     }
 
     @Override
@@ -89,5 +110,26 @@ public class AdminServiceImpl implements AdminService {
         return new PageInfo<>(list);
     }
 
+    @Override
+    public void remove(Integer adminId) {
+        adminMapper.deleteByPrimaryKey(adminId);
+    }
 
+    @Override
+    public Admin getAdminById(Integer adminId) {
+        return adminMapper.selectByPrimaryKey(adminId);
+    }
+
+    @Override
+    public void update(Admin admin) {
+        // selective的作用是对象中为null的字段就不更新
+        try {
+            adminMapper.updateByPrimaryKeySelective(admin);
+        } catch (Exception e) {
+            // 如果是DuplicateKeyException异常，则抛出自定义的LoginAcctAlreadyExistException
+            if (e instanceof DuplicateKeyException) {
+                throw new LoginAcctAlreadyExistForUpdateException(CrowdConstant.MESSAGE_LOGIN_ACCOUNT_ALREADY_EXIST);
+            }
+        }
+    }
 }

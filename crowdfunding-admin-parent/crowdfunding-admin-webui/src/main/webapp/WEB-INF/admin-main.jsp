@@ -8,10 +8,11 @@
 <!-- 引入封装的头部 -->
 <%@include file="/WEB-INF/include-head.jsp"%>
 <body>
-<!-- 引入封装的侧边栏 -->
+<!-- 引入封装的nav -->
 <%@include file="/WEB-INF/include-nav.jsp"%>
 <div class="container-fluid">
     <div class="row">
+        <!-- 引入封装的侧边栏 -->
         <%@include file="/WEB-INF/include-sidebar.jsp"%>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <h1 class="page-header">控制面板</h1>

@@ -3,6 +3,8 @@ package com.zzx.crowd.mvc.config;
 import com.google.gson.Gson;
 import com.zzx.crowd.constant.CrowdConstant;
 import com.zzx.crowd.exception.AccessForbiddenException;
+import com.zzx.crowd.exception.LoginAcctAlreadyExistException;
+import com.zzx.crowd.exception.LoginAcctAlreadyExistForUpdateException;
 import com.zzx.crowd.exception.LoginFailedException;
 import com.zzx.crowd.util.CrowdUtil;
 import com.zzx.crowd.util.ResultEntity;
@@ -22,6 +24,40 @@ import java.io.IOException;
 // ControllerAdvice表示注解表示当前类是一个基于注解的异常处理类
 @ControllerAdvice
 public class CrowdExceptionResolver {
+
+    /**
+     * 修改一个账户时，其账户已存在产生的异常处理
+     * @param exception
+     * @param request
+     * @param response
+     * @return
+     * @throws IOException
+     */
+    @ExceptionHandler(value = LoginAcctAlreadyExistForUpdateException.class)
+    public ModelAndView resolveLoginAcctAlreadyExistForUpdateException(
+            LoginAcctAlreadyExistForUpdateException exception,
+            HttpServletRequest request,
+            HttpServletResponse response) throws IOException {
+        String viewName = "system-error";
+        return commonResolve(viewName, exception, request, response);
+    }
+
+    /**
+     * 新增一个账户已存在的用户产生的异常处理
+     * @param exception
+     * @param request
+     * @param response
+     * @return
+     * @throws IOException
+     */
+    @ExceptionHandler(value = LoginAcctAlreadyExistException.class)
+    public ModelAndView resolveLoginAcctAlreadyExistException(
+            LoginAcctAlreadyExistException exception,
+            HttpServletRequest request,
+            HttpServletResponse response) throws IOException {
+        String viewName = "admin-add";
+        return commonResolve(viewName, exception, request, response);
+    }
 
     /**
      * 未登录状态下访问受保护资源产生的异常处理

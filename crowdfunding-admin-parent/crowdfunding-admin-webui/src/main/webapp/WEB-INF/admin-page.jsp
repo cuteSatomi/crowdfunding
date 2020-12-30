@@ -8,7 +8,7 @@
 <html lang="zh-CN">
 <!-- 引入封装的头部 -->
 <%@include file="/WEB-INF/include-head.jsp" %>
-<link rel="stylesheet" href="css/pagination.css" />
+<link rel="stylesheet" href="css/pagination.css"/>
 <script type="text/javascript" src="jquery/jquery.pagination.js"></script>
 <body>
 <!-- 引入封装的nav -->
@@ -44,7 +44,7 @@
         var pageNum = pageIndex + 1;
 
         // 跳转页面时加上keyword查询条件
-        window.location.href = "admin/get/page.html?pageNum=" + pageNum+"&keyword=${param.keyword}";
+        window.location.href = "admin/get/page.html?pageNum=" + pageNum + "&keyword=${param.keyword}";
 
         // 由于每个页码按钮都是超链接，所以这个函数最后取消超链接的默认行为
         return false;
@@ -62,11 +62,13 @@
                     <h3 class="panel-title"><i class="glyphicon glyphicon-th"></i> 数据列表</h3>
                 </div>
                 <div class="panel-body">
-                    <form action="admin/get/page.html" method="post" class="form-inline" role="form" style="float:left;">
+                    <form action="admin/get/page.html" method="post" class="form-inline" role="form"
+                          style="float:left;">
                         <div class="form-group has-feedback">
                             <div class="input-group">
                                 <div class="input-group-addon">查询条件</div>
-                                <input name="keyword" class="form-control has-success" type="text" placeholder="请输入查询条件">
+                                <input name="keyword" class="form-control has-success" type="text"
+                                       placeholder="请输入查询条件">
                             </div>
                         </div>
                         <button type="submit" class="btn btn-warning"><i class="glyphicon glyphicon-search"></i> 查询
@@ -75,9 +77,8 @@
                     <button type="button" class="btn btn-danger" style="float:right;margin-left:10px;"><i
                             class=" glyphicon glyphicon-remove"></i> 删除
                     </button>
-                    <button type="button" class="btn btn-primary" style="float:right;"
-                            onclick="window.location.href='add.html'"><i class="glyphicon glyphicon-plus"></i> 新增
-                    </button>
+                    <a href="admin/to/add/page.html" class="btn btn-primary" style="float:right;"><i
+                            class="glyphicon glyphicon-plus"></i> 新增</a>
                     <br>
                     <hr style="clear:both;">
                     <div class="table-responsive">
@@ -109,10 +110,11 @@
                                         <td>
                                             <button type="button" class="btn btn-success btn-xs"><i
                                                     class=" glyphicon glyphicon-check"></i></button>
-                                            <button type="button" class="btn btn-primary btn-xs"><i
-                                                    class=" glyphicon glyphicon-pencil"></i></button>
-                                            <button type="button" class="btn btn-danger btn-xs"><i
-                                                    class=" glyphicon glyphicon-remove"></i></button>
+                                            <a class="btn btn-primary btn-xs"
+                                               href="admin/to/edit/page.html?adminId=${admin.id}&pageNum=${pageInfo.pageNum}&keyword=${param.keyword}"><i class=" glyphicon glyphicon-pencil"></i></a>
+                                            <a class="btn btn-danger btn-xs" onclick="confirm('确认要删除吗？')"
+                                               href="admin/remove/${admin.id}/${requestScope.pageInfo.pageNum}/${param.keyword}.html"><i
+                                                    class=" glyphicon glyphicon-remove"></i></a>
                                         </td>
                                     </tr>
                                 </c:forEach>
