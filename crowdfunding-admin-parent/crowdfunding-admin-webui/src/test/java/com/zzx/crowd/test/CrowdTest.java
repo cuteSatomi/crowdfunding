@@ -1,7 +1,9 @@
 package com.zzx.crowd.test;
 
 import com.zzx.crowd.entity.Admin;
+import com.zzx.crowd.entity.Role;
 import com.zzx.crowd.mapper.AdminMapper;
+import com.zzx.crowd.mapper.RoleMapper;
 import com.zzx.crowd.service.api.AdminService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,6 +34,16 @@ public class CrowdTest {
 
     @Resource
     private AdminService adminService;
+
+    @Resource
+    private RoleMapper roleMapper;
+
+    @Test
+    public void testRoleInsert() {
+        for (int i = 0; i < 235; i++) {
+            roleMapper.insert(new Role(null, "role" + i));
+        }
+    }
 
     @Test
     public void test() {

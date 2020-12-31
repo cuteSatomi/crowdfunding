@@ -75,7 +75,7 @@
       缺点：不符合RESTFUL风格
     -->
     <url-pattern>*.html</url-pattern>
-    <!-- 如果一个AJax请求扩展名是html，但是实际服务器给浏览器返回的是json数据，二者不匹配会出现406。 -->
+    <!-- 如果一个Ajax请求扩展名是html，但是实际服务器给浏览器返回的是json数据，二者不匹配会出现406。 -->
     <!-- 为了让Ajax请求得到JSON格式的响应数据，需要另外配置一个json扩展名 -->
     <url-pattern>*.json</url-pattern>
   </servlet-mapping>
