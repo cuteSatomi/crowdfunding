@@ -21,6 +21,18 @@ public class RoleController {
     private RoleService roleService;
 
     /**
+     * 新增角色
+     * @param role
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("role/save.json")
+    public ResultEntity<String> saveRole(Role role) {
+        roleService.saveRole(role);
+        return ResultEntity.successWithoutData();
+    }
+
+    /**
      * 分页查询角色的方法
      *
      * @param keyword  查询角色名称，不传入参数则默认空字符串

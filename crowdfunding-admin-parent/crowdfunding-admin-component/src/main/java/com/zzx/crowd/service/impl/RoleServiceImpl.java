@@ -23,21 +23,27 @@ public class RoleServiceImpl implements RoleService {
 
     /**
      * 分页查询角色
-     * @param pageNum 查询的页码
+     *
+     * @param pageNum  查询的页码
      * @param pageSize 页码的大小
-     * @param keyword 查询的关键字
+     * @param keyword  查询的关键字
      * @return
      */
     @Override
     public PageInfo<Role> getPageInfo(Integer pageNum, Integer pageSize, String keyword) {
 
         // 开启分页
-        PageHelper.startPage(pageNum,pageSize);
+        PageHelper.startPage(pageNum, pageSize);
 
         // 通过mapper查询结果
         List<Role> roleList = roleMapper.selectRoleByKeyword(keyword);
 
         // 返回PageInfo对象
         return new PageInfo(roleList);
+    }
+
+    @Override
+    public void saveRole(Role role) {
+        roleMapper.insert(role);
     }
 }

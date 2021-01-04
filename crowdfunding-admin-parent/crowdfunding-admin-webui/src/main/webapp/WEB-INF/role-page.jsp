@@ -7,15 +7,73 @@
 <html lang="zh-CN">
 <!-- 引入封装的头部 -->
 <%@include file="/WEB-INF/include-head.jsp" %>
+<link rel="stylesheet" href="css/pagination.css"/>
+<script type="text/javascript" src="jquery/jquery.pagination.js"></script>
 <script type="text/javascript" src="crowd/my-role.js"></script>
 <script type="text/javascript">
 
-    // 为分页操作准备初始化数据
-    window.pageNum = 1;
-    window.pageSize = 5;
-    window.keyword = "";
+    $(function () {
+        // 为分页操作准备初始化数据
+        window.pageNum = 1;
+        window.pageSize = 5;
+        window.keyword = "";
 
-    generatePage();
+        generatePage();
+
+        // 输入关键字的查询
+        $("#searchBtn").click(function () {
+
+            // 将关键字输入框中的文本赋值给window对象，并且将当前页码置为1
+            window.keyword = $("#keywordInput").val();
+            window.pageNum = 1;
+
+            // 调用generatePage()重新请求页面
+            generatePage();
+        });
+
+        // 单击新增按钮弹出模态框
+        $("#showAddModalBtn").click(function () {
+            $("#addModal").modal("show");
+        });
+
+        // 点击保存按钮发送ajax请求
+        $("#saveRoleBtn").click(function () {
+
+            // 获取输入的角色名称，后代选择器，找出后代中name为roleName的
+            var roleName = $("#addModal [name=roleName]").val().trim();
+
+            // 发送ajax请求
+            $.ajax({
+                url: "role/save.json",
+                type: "POST",
+                dataType: "json",
+                data: {
+                    name: roleName
+                },
+                success: function (response) {
+                    // 获取结果
+                    var result = response.result;
+                    if (result == "SUCCESS") {
+                        layer.msg("操作成功！");
+
+                        // 成功保存角色后重新调用generatePage()请求结果，为了能看到新增的角色，直接跳到最后一页
+                        window.pageNum = 88888;
+                        generatePage();
+                    }
+                    if (result == "FAILED") {
+                        layer.msg("操作失败！" + response.message);
+                    }
+                },
+                error: function (response) {
+                    layer.msg(response.status + " " + response.statusText)
+                }
+            });
+            // 由于不论成功还是失败都需要关闭和清理模态框，因此这一步放在下面来做
+            $("#addModal").modal("hide");
+            $("#addModal [name=roleName]").val("");
+        });
+
+    });
 </script>
 <body>
 <!-- 引入封装的侧边栏 -->
@@ -33,17 +91,19 @@
                         <div class="form-group has-feedback">
                             <div class="input-group">
                                 <div class="input-group-addon">查询条件</div>
-                                <input class="form-control has-success" type="text" placeholder="请输入查询条件">
+                                <input id="keywordInput" class="form-control has-success" type="text"
+                                       placeholder="请输入查询条件">
                             </div>
                         </div>
-                        <button type="button" class="btn btn-warning"><i class="glyphicon glyphicon-search"></i> 查询
+                        <button id="searchBtn" type="button" class="btn btn-warning"><i
+                                class="glyphicon glyphicon-search"></i> 查询
                         </button>
                     </form>
                     <button type="button" class="btn btn-danger" style="float:right;margin-left:10px;"><i
                             class=" glyphicon glyphicon-remove"></i> 删除
                     </button>
-                    <button type="button" class="btn btn-primary" style="float:right;"
-                            onclick="window.location.href='form.html'"><i class="glyphicon glyphicon-plus"></i> 新增
+                    <button id="showAddModalBtn" type="button" class="btn btn-primary" style="float:right;"><i
+                            class="glyphicon glyphicon-plus"></i> 新增
                     </button>
                     <br>
                     <hr style="clear:both;">
@@ -57,33 +117,11 @@
                                 <th width="100">操作</th>
                             </tr>
                             </thead>
-                            <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td><input type="checkbox"></td>
-                                <td>PM - 项目经理</td>
-                                <td>
-                                    <button type="button" class="btn btn-success btn-xs"><i
-                                            class=" glyphicon glyphicon-check"></i></button>
-                                    <button type="button" class="btn btn-primary btn-xs"><i
-                                            class=" glyphicon glyphicon-pencil"></i></button>
-                                    <button type="button" class="btn btn-danger btn-xs"><i
-                                            class=" glyphicon glyphicon-remove"></i></button>
-                                </td>
-                            </tr>
-                            </tbody>
+                            <tbody id="rolePageBody"></tbody>
                             <tfoot>
                             <tr>
                                 <td colspan="6" align="center">
-                                    <ul class="pagination">
-                                        <li class="disabled"><a href="#">上一页</a></li>
-                                        <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
-                                        <li><a href="#">2</a></li>
-                                        <li><a href="#">3</a></li>
-                                        <li><a href="#">4</a></li>
-                                        <li><a href="#">5</a></li>
-                                        <li><a href="#">下一页</a></li>
-                                    </ul>
+                                    <div id="Pagination" class="pagination"><!--这里显示分页--></div>
                                 </td>
                             </tr>
                             </tfoot>
@@ -94,5 +132,6 @@
         </div>
     </div>
 </div>
+<%@include file="modal-role-add.jsp" %>
 </body>
 </html>
