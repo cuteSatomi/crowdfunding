@@ -1,7 +1,6 @@
 package com.zzx.crowd.mvc.controller;
 
 import com.zzx.crowd.entity.Admin;
-import com.zzx.crowd.entity.ParamData;
 import com.zzx.crowd.service.api.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,7 +40,7 @@ public class TestController {
         return "成功";
     }
 
-    @ResponseBody
+/*    @ResponseBody
     @RequestMapping("sendArray/two.html")
     public String testSendArrayTwo(ParamData paramData) {
         List<Integer> array = paramData.getArray();
@@ -49,7 +48,7 @@ public class TestController {
             System.out.println("number = " + num);
         }
         return "success";
-    }
+    }*/
 
     @ResponseBody
     @RequestMapping("sendArray/three.html")

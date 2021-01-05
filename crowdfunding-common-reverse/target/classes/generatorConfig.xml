@@ -2,6 +2,16 @@
         PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
+    <!--
+        *************************************************************************************
+        *************************************************************************************
+        *************************************************************************************
+                    这里有一个很坑的地方，windows下路径分隔符是"\"，而mac或者linux应该是"/"
+                    分割符不对会导致不会生成pojo和mapper接口，而且还她妈的不会报错
+        *************************************************************************************
+        *************************************************************************************
+        *************************************************************************************
+    -->
     <!-- mybatis-generator:generate -->
     <context id="atguiguTables" targetRuntime="MyBatis3">
         <commentGenerator>
@@ -22,7 +32,7 @@
         </javaTypeResolver>
 
         <!-- targetProject:生成 Entity 类的路径 -->
-        <javaModelGenerator targetProject=".\src\main\java"
+        <javaModelGenerator targetProject="./src/main/java"
                             targetPackage="com.zzx.crowd.entity">
             <!-- enableSubPackages:是否让 schema 作为包的后缀 -->
             <property name="enableSubPackages" value="false"/>
@@ -32,7 +42,7 @@
         </javaModelGenerator>
 
         <!-- targetProject:XxxMapper.xml 映射文件生成的路径 -->
-        <sqlMapGenerator targetProject=".\src\main\java"
+        <sqlMapGenerator targetProject="./src/main/java"
                          targetPackage="com.zzx.crowd.mapper">
 
             <!-- enableSubPackages:是否让 schema 作为包的后缀 -->
@@ -40,12 +50,12 @@
         </sqlMapGenerator>
 
         <!-- targetPackage：Mapper 接口生成的位置 -->
-        <javaClientGenerator type="XMLMAPPER" targetProject=".\src\main\java"
+        <javaClientGenerator type="XMLMAPPER" targetProject="./src/main/java"
                              targetPackage="com.zzx.crowd.mapper">
             <!-- enableSubPackages:是否让 schema 作为包的后缀 -->
             <property name="enableSubPackages" value="false"/>
         </javaClientGenerator>
         <!-- 数据库表名字和我们的 entity 类对应的映射指定 -->
-        <table tableName="t_role" domainObjectName="Role"/>
+        <table tableName="t_menu" domainObjectName="Menu"/>
     </context>
 </generatorConfiguration>
