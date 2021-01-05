@@ -1,3 +1,24 @@
+// 显示确认是否删除的模态框
+function showConfirmModal(roleArray) {
+    // 显示模态框
+    $("#confirmModal").modal("show");
+
+    // 清除旧数据
+    $("#roleNameDiv").empty();
+
+    // 在window对象中定义一个存放角色id的数组
+    window.roleIdArray = [];
+
+    for (var i = 0; i < roleArray.length; i++) {
+        var role = roleArray[i];
+        var roleName = role.roleName;
+        // 将其拼到roleNameDiv中
+        $("#roleNameDiv").append(roleName + "<br>");
+        var roleId = role.roleId;
+        window.roleIdArray.push(roleId);
+    }
+}
+
 // 执行分页，生成页面效果，任何时候调用这个函数都会重新加载页面
 function generatePage() {
     // 获取分页数据
@@ -67,7 +88,7 @@ function fillTableBody(pageInfo) {
 
         // 这里用的不是真实的role的id 而是根据索引生成，从1开始
         var numberTd = "<td>" + (i + 1) + "</td>";
-        var checkboxTd = "<td><input type='checkbox'></td>";
+        var checkboxTd = "<td><input id='" + roleId + "' class='itemCheckBox' type='checkbox'></td>";
         var roleNameTd = "<td>" + roleName + "</td>";
         var checkBtn = "<button type='button' class='btn btn-success btn-xs'><i class=' glyphicon glyphicon-check'></i></button>";
 
@@ -108,6 +129,8 @@ function generateNavigator(pageInfo) {
 
 // 翻页时的回调函数
 function paginationCallBack(pageIndex, jQuery) {
+    // 将全选的checkbox置为false
+    $("#summaryCheckBox").prop("checked", false);
 
     // 修改window对象的pageNum属性
     window.pageNum = pageIndex + 1;

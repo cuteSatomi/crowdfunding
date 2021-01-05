@@ -6,9 +6,12 @@ import com.zzx.crowd.service.api.RoleService;
 import com.zzx.crowd.util.ResultEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 /**
  * @author zzx
@@ -21,7 +24,20 @@ public class RoleController {
     private RoleService roleService;
 
     /**
+     * 根据所给的id数组删除对应的角色
+     * @param roleIdList
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("role/remove/by/role/id/array.json")
+    public ResultEntity<String> removeByRoleIdArray(@RequestBody List<Integer> roleIdList) {
+        roleService.removeRole(roleIdList);
+        return ResultEntity.successWithoutData();
+    }
+
+    /**
      * 根据主键更新角色
+     *
      * @param role
      * @return
      */
@@ -34,6 +50,7 @@ public class RoleController {
 
     /**
      * 新增角色
+     *
      * @param role
      * @return
      */

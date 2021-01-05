@@ -3,6 +3,7 @@ package com.zzx.crowd.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.zzx.crowd.entity.Role;
+import com.zzx.crowd.entity.RoleExample;
 import com.zzx.crowd.mapper.RoleMapper;
 import com.zzx.crowd.service.api.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,5 +51,14 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public void updateRole(Role role) {
         roleMapper.updateByPrimaryKey(role);
+    }
+
+    @Override
+    public void removeRole(List<Integer> roleIdList) {
+        RoleExample example = new RoleExample();
+        RoleExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIn(roleIdList);
+
+        roleMapper.deleteByExample(example);
     }
 }
