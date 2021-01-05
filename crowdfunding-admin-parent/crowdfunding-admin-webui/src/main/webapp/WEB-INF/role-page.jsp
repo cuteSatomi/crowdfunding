@@ -65,12 +65,65 @@
                     }
                 },
                 error: function (response) {
-                    layer.msg(response.status + " " + response.statusText)
+                    layer.msg(response.status + " " + response.statusText);
                 }
             });
             // 由于不论成功还是失败都需要关闭和清理模态框，因此这一步放在下面来做
             $("#addModal").modal("hide");
             $("#addModal [name=roleName]").val("");
+        });
+
+        // 点击铅笔按钮弹出更新模态框
+        // on函数的第一个参数表示事件类型，第二个函数表示要绑定该事件的元素，第三个函数表示事件的相应函数
+        // 比如下面代码表示找到class为pencilBtn的按钮，为其绑的一个单击事件，事件的内容就是第三个参数里的内容
+        $("#rolePageBody").on("click", ".pencilBtn", function () {
+            // 打开模态框
+            $("#editModal").modal("show");
+
+            // 获取当前角色名称，得到当前jQuery对象的父节点的前一个兄弟节点的text文本，就是roleName
+            var roleName = $(this).parent().prev().text();
+
+            // 将roleId设置到window对象中
+            window.roleId = this.id;
+
+            // 将得到的roleName回显到模态框中
+            $("#editModal [name=roleName]").val(roleName);
+        });
+
+        // 给更新按钮绑定单击事件
+        $("#updateRoleBtn").click(function () {
+
+            // 从文本框获取新的角色名称
+            var roleName = $("#editModal [name=roleName]").val();
+
+            // 发送ajax请求
+            $.ajax({
+                url: "role/update.json",
+                type: "POST",
+                data: {
+                    id: window.roleId,
+                    name: roleName,
+                },
+                dataType: "json",
+                success: function (response) {
+                    // 获取结果
+                    var result = response.result;
+                    if (result == "SUCCESS") {
+                        layer.msg("操作成功！");
+
+                        // 成功保存角色后重新调用generatePage()请求结果
+                        generatePage();
+                    }
+                    if (result == "FAILED") {
+                        layer.msg("操作失败！" + response.message);
+                    }
+                },
+                error: function (response) {
+                    layer.msg(response.status + " " + response.statusText);
+                }
+            });
+            // 不论成功或者失败都需要关闭模态框
+            $("#editModal").modal("hide");
         });
 
     });
@@ -132,6 +185,7 @@
         </div>
     </div>
 </div>
-<%@include file="modal-role-add.jsp" %>
+<%@include file="/WEB-INF/modal-role-add.jsp" %>
+<%@include file="/WEB-INF/modal-role-edit.jsp" %>
 </body>
 </html>

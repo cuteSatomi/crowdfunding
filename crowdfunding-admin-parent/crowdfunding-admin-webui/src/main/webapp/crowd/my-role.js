@@ -69,9 +69,15 @@ function fillTableBody(pageInfo) {
         var numberTd = "<td>" + (i + 1) + "</td>";
         var checkboxTd = "<td><input type='checkbox'></td>";
         var roleNameTd = "<td>" + roleName + "</td>";
-        var buttonTd = "<td><button type='button' class='btn btn-success btn-xs'><i class=' glyphicon glyphicon-check'></i></button>\n " +
-            "<button type='button' class='btn btn-primary btn-xs'><i class=' glyphicon glyphicon-pencil'></i></button>\n " +
-            "<button type='button' class='btn btn-danger btn-xs'><i class=' glyphicon glyphicon-remove'></i></button></td>";
+        var checkBtn = "<button type='button' class='btn btn-success btn-xs'><i class=' glyphicon glyphicon-check'></i></button>";
+
+        // 通过button标签的id属性（别的属性其实也可以）把roleId值传递到button按钮的单击响应函数中，在单击响应函数中使用this.id
+        var pencilBtn = "<button id='" + roleId + "' type='button' class='btn btn-primary btn-xs pencilBtn'><i class=' glyphicon glyphicon-pencil'></i></button>";
+
+        // 通过button标签的id属性（别的属性其实也可以）把roleId值传递到button按钮的单击响应函数中，在单击响应函数中使用this.id
+        var removeBtn = "<button id='" + roleId + "' type='button' class='btn btn-danger btn-xs removeBtn'><i class=' glyphicon glyphicon-remove'></i></button>";
+
+        var buttonTd = "<td>" + checkBtn + " " + pencilBtn + " " + removeBtn + "</td>";
 
         var tr = "<tr>" + numberTd + checkboxTd + roleNameTd + buttonTd + "</tr>";
 

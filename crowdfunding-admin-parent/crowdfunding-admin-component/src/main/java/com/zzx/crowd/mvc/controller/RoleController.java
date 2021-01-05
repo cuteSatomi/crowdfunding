@@ -21,6 +21,18 @@ public class RoleController {
     private RoleService roleService;
 
     /**
+     * 根据主键更新角色
+     * @param role
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("role/update.json")
+    public ResultEntity<String> updateRole(Role role) {
+        roleService.updateRole(role);
+        return ResultEntity.successWithoutData();
+    }
+
+    /**
      * 新增角色
      * @param role
      * @return
