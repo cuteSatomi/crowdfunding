@@ -5,6 +5,7 @@ import com.zzx.crowd.service.api.MenuService;
 import com.zzx.crowd.util.ResultEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -22,6 +23,46 @@ public class MenuController {
     @Resource
     private MenuService menuService;
 
+    /**
+     * 根据主键id删除菜单
+     * @param id
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("menu/remove.json")
+    public ResultEntity<String> removeMenu(@RequestParam("id") Integer id){
+        menuService.removeMenu(id);
+        return ResultEntity.successWithoutData();
+    }
+
+    /**
+     * 更新菜单
+     * @param menu
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("menu/update.json")
+    public ResultEntity<String> updateMenu(Menu menu){
+        menuService.updateMenu(menu);
+        return ResultEntity.successWithoutData();
+    }
+
+    /**
+     * 保存菜单
+     * @param menu
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("menu/save.json")
+    public ResultEntity<String> saveMenu(Menu menu){
+        menuService.saveMenu(menu);
+        return ResultEntity.successWithoutData();
+    }
+
+    /**
+     * 得到所有的菜单
+     * @return
+     */
     @ResponseBody
     @RequestMapping("menu/get/whole/tree.json")
     public ResultEntity<Menu> getWholeTree() {
