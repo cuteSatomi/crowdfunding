@@ -2,6 +2,7 @@ package com.zzx.crowd.mvc.controller;
 
 import com.zzx.crowd.entity.Role;
 import com.zzx.crowd.service.api.AdminService;
+import com.zzx.crowd.service.api.AuthService;
 import com.zzx.crowd.service.api.RoleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -23,6 +24,9 @@ public class AssignController {
 
     @Resource
     private RoleService roleService;
+
+    @Resource
+    private AuthService authService;
 
     /**
      * 建立新的用户角色关系
