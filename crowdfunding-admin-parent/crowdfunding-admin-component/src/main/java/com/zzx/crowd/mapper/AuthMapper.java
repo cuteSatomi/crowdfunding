@@ -28,4 +28,10 @@ public interface AuthMapper {
     int updateByPrimaryKeySelective(Auth record);
 
     int updateByPrimaryKey(Auth record);
+
+    List<Integer> selectAssignAuthIdByRoleId(Integer roleId);
+
+    void deleteOldRelationship(Integer roleId);
+
+    void insertNewRelationship(@Param("roleId") Integer roleId, @Param("authIdList") List<Integer> authIdList);
 }

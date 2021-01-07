@@ -1,3 +1,80 @@
+// 生成权限属性结构的方法
+function fillAuthTree() {
+    // 发送ajax请求得到所有权限
+    var ajaxRtn = $.ajax({
+        url: "assign/get/all/auth.json",
+        type: "POST",
+        dataType: "json",
+        async: false
+    });
+
+    // 如果响应的状态码不等于200，说明请求失败，直接返回
+    if (ajaxRtn.status != 200) {
+        layer.msg("请求出错！响应状态码：" + ajaxRtn.status + " " + ajaxRtn.statusText);
+        return;
+    }
+
+    // 请求成功得到结果
+    var authList = ajaxRtn.responseJSON.data;
+
+    // zTree的设置
+    var setting = {
+        data: {
+            simpleData: {
+                enable: true,
+                // 使用category_id作为树形结构的父节点
+                pIdKey: "categoryId"
+            },
+            key: {
+                // 使用title属性显示节点名称
+                name: "title"
+            }
+        },
+        check: {
+            enable: true
+        }
+    };
+    // 生成zTree
+    $.fn.zTree.init($("#authTreeDemo"), setting, authList);
+
+    // 获取zTreeObj对象，并且调用expandAll方法将节点全部展开
+    var zTreeObj = $.fn.zTree.getZTreeObj("authTreeDemo");
+    zTreeObj.expandAll(true);
+
+    // 查询已分配权限的id
+    ajaxRtn = $.ajax({
+        url: "assign/get/assigned/auth/id/by/role/id.json",
+        type: "POST",
+        data: {
+            roleId: window.roleId,
+        },
+        dataType: "json",
+        async: false
+    });
+
+    // 如果响应的状态码不等于200，说明请求失败，直接返回
+    if (ajaxRtn.status != 200) {
+        layer.msg("请求出错！响应状态码：" + ajaxRtn.status + " " + ajaxRtn.statusText);
+        return;
+    }
+    // 从响应结果取得已经分配的权限的id数组
+    var authIdArray = ajaxRtn.responseJSON.data;
+
+    // 根据authIdArray将对应的角色勾选回显
+    for (var i = 0; i < authIdArray.length; i++) {
+        var authId = authIdArray[i];
+
+        // 根据authId查询树形结构中对应的节点
+        var treeNode = zTreeObj.getNodeByParam("id", authId);
+
+        // 将找到的treeNode设置为已勾选
+        // checked表示勾选，checkTypeFlag表示不与父节点联动
+        var checked = true;
+        var checkTypeFlag = false;
+        zTreeObj.checkNode(treeNode, checked, checkTypeFlag);
+    }
+}
+
 // 显示确认是否删除的模态框
 function showConfirmModal(roleArray) {
     // 显示模态框
@@ -90,7 +167,7 @@ function fillTableBody(pageInfo) {
         var numberTd = "<td>" + (i + 1) + "</td>";
         var checkboxTd = "<td><input id='" + roleId + "' class='itemCheckBox' type='checkbox'></td>";
         var roleNameTd = "<td>" + roleName + "</td>";
-        var checkBtn = "<button type='button' class='btn btn-success btn-xs'><i class=' glyphicon glyphicon-check'></i></button>";
+        var checkBtn = "<button id='" + roleId + "' type='button' class='btn btn-success btn-xs checkBtn'><i class=' glyphicon glyphicon-check'></i></button>";
 
         // 通过button标签的id属性（别的属性其实也可以）把roleId值传递到button按钮的单击响应函数中，在单击响应函数中使用this.id
         var pencilBtn = "<button id='" + roleId + "' type='button' class='btn btn-primary btn-xs pencilBtn'><i class=' glyphicon glyphicon-pencil'></i></button>";
