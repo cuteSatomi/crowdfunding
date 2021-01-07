@@ -61,4 +61,30 @@ public class RoleServiceImpl implements RoleService {
 
         roleMapper.deleteByExample(example);
     }
+
+    @Override
+    public List<Role> getAssignedRole(Integer adminId) {
+        return roleMapper.selectAssignedRole(adminId);
+    }
+
+    @Override
+    public List<Role> getUnAssignedRole(Integer adminId) {
+        return roleMapper.selectUnAssignedRole(adminId);
+    }
+
+    /**
+     * 需要先根据adminId删除中间表中的对应信息，再插入新的关系
+     *
+     * @param adminId
+     * @param roleIdList
+     */
+    @Override
+    public void saveAdminRoleRelationship(Integer adminId, List<Integer> roleIdList) {
+        // 删除旧的关系
+        roleMapper.deleteOldRelationship(adminId);
+        // 插入新的关系
+        if (roleIdList != null && roleIdList.size() > 0) {
+            roleMapper.insertNewRelationship(adminId, roleIdList);
+        }
+    }
 }

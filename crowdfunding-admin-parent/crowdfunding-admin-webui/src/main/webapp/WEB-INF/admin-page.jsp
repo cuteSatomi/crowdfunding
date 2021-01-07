@@ -108,10 +108,12 @@
                                         <td>${admin.userName}</td>
                                         <td>${admin.email}</td>
                                         <td>
-                                            <button type="button" class="btn btn-success btn-xs"><i
-                                                    class=" glyphicon glyphicon-check"></i></button>
+                                            <!-- 分配权限按钮也需要带上当前页以及关键字信息，可以在分配后重新请求时回到当前页 -->
+                                            <a href="assign/to/assign/role/page.html?adminId=${admin.id}&pageNum=${pageInfo.pageNum}&keyword=${param.keyword}"
+                                               class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></a>
                                             <a class="btn btn-primary btn-xs"
-                                               href="admin/to/edit/page.html?adminId=${admin.id}&pageNum=${pageInfo.pageNum}&keyword=${param.keyword}"><i class=" glyphicon glyphicon-pencil"></i></a>
+                                               href="admin/to/edit/page.html?adminId=${admin.id}&pageNum=${pageInfo.pageNum}&keyword=${param.keyword}"><i
+                                                    class=" glyphicon glyphicon-pencil"></i></a>
                                             <a class="btn btn-danger btn-xs" onclick="confirm('确认要删除吗？')"
                                                href="admin/remove/${admin.id}/${requestScope.pageInfo.pageNum}/${param.keyword}.html"><i
                                                     class=" glyphicon glyphicon-remove"></i></a>
