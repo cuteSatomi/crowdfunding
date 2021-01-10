@@ -132,4 +132,35 @@ public class AdminServiceImpl implements AdminService {
             }
         }
     }
+
+    @Override
+    public Admin getAdminByLoginAcct(String loginAcct) {
+
+        // 构建AdminExample，写入查询条件查询
+        AdminExample adminExample = new AdminExample();
+        // 创建Criteria对象
+        AdminExample.Criteria criteria = adminExample.createCriteria();
+        // 添加查询条件 LoginAcct 等于传入的loginAcct
+        criteria.andLoginAcctEqualTo(loginAcct);
+        // 使用通用mapper查询
+        List<Admin> list = adminMapper.selectByExample(adminExample);
+
+        // 判断查询出的对象是否为空
+        // list是null或者长度为0都直接抛出异常
+        if (list == null || list.size() == 0) {
+            throw new LoginFailedException(CrowdConstant.MESSAGE_LOGIN_FAILED);
+        }
+
+        // 查出的list长度大于1，说明查询的结果也是有问题，抛出运行时异常
+        if (list.size() > 1) {
+            throw new RuntimeException(CrowdConstant.MESSAGE_SYSTEM_ERROR_LOGINACCT_NOT_UNIQUE);
+        }
+
+        // 如果查出的对象为null，也抛出登录失败异常
+        Admin admin = list.get(0);
+        if (admin == null) {
+            throw new LoginFailedException(CrowdConstant.MESSAGE_LOGIN_FAILED);
+        }
+        return admin;
+    }
 }

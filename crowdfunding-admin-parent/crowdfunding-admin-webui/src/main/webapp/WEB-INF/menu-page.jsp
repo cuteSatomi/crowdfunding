@@ -7,9 +7,9 @@
 <html lang="zh-CN">
 <!-- 引入封装的头部 -->
 <%@include file="/WEB-INF/include-head.jsp" %>
-<link rel="stylesheet" href="ztree/zTreeStyle.css">
-<script type="text/javascript" src="ztree/jquery.ztree.all-3.5.min.js"></script>
-<script type="text/javascript" src="crowd/my-menu.js"></script>
+<link rel="stylesheet" href="/static/ztree/zTreeStyle.css">
+<script type="text/javascript" src="/static/ztree/jquery.ztree.all-3.5.min.js"></script>
+<script type="text/javascript" src="/static/crowd/my-menu.js"></script>
 <script type="text/javascript">
     $(function () {
         // 生成树形结构

@@ -1,82 +1,92 @@
 <!DOCTYPE web-app PUBLIC
- "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
- "http://java.sun.com/dtd/web-app_2_3.dtd" >
+        "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+        "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xmlns="http://java.sun.com/xml/ns/javaee"
-          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
-          version="2.5">
+         xmlns="http://java.sun.com/xml/ns/javaee"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         version="3.0">
 
-  <display-name>Archetype Created Web Application</display-name>
+    <display-name>Archetype Created Web Application</display-name>
 
-  <!-- 配置contextLoader来加载spring配置文件 -->
-  <listener>
-    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-  </listener>
+    <!-- 配置contextLoader来加载spring配置文件 -->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
 
-  <!-- spring配置文件的位置 -->
-  <context-param>
-    <param-name>contextConfigLocation</param-name>
-    <param-value>classpath:spring-persist-*.xml</param-value>
-  </context-param>
+    <!-- spring配置文件的位置 -->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:spring-persist-*.xml</param-value>
+    </context-param>
 
-  <!-- 配置filter -->
-  <filter>
-    <filter-name>CharacterEncodingFilter</filter-name>
-    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
-    <!-- 指定字符集 -->
-    <init-param>
-      <param-name>encoding</param-name>
-      <param-value>UTF-8</param-value>
-    </init-param>
-    <!-- 强制请求设置字符集 -->
-    <init-param>
-      <param-name>forceRequestEncoding</param-name>
-      <param-value>true</param-value>
-    </init-param>
-    <!-- 强制响应设置字符集 -->
-    <init-param>
-      <param-name>forceResponseEncoding</param-name>
-      <param-value>true</param-value>
-    </init-param>
-  </filter>
-  <!-- 这个Filter执行的顺序要在其他Filter之前 -->
-  <!-- 原因: -->
-  <!-- request.setCharacterEncoding(encoding) 必须在request.getParameter()前面 -->
-  <!-- response.setCharacterEncoding(encoding) 必须在response.getWriter()前面 -->
-  <filter-mapping>
-    <filter-name>CharacterEncodingFilter</filter-name>
-    <!-- 表示拦截所有路径 -->
-    <url-pattern>/*</url-pattern>
-  </filter-mapping>
+    <!-- 配置filter -->
+    <filter>
+        <filter-name>CharacterEncodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <!-- 指定字符集 -->
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <!-- 强制请求设置字符集 -->
+        <init-param>
+            <param-name>forceRequestEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <!-- 强制响应设置字符集 -->
+        <init-param>
+            <param-name>forceResponseEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <!-- 这个Filter执行的顺序要在其他Filter之前 -->
+    <!-- 原因: -->
+    <!-- request.setCharacterEncoding(encoding) 必须在request.getParameter()前面 -->
+    <!-- response.setCharacterEncoding(encoding) 必须在response.getWriter()前面 -->
+    <filter-mapping>
+        <filter-name>CharacterEncodingFilter</filter-name>
+        <!-- 表示拦截所有路径 -->
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
-  <servlet>
-    <servlet-name>DispatcherServlet</servlet-name>
-    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-    <init-param>
-      <param-name>contextConfigLocation</param-name>
-      <param-value>classpath:spring-web-mvc.xml</param-value>
-    </init-param>
-    <load-on-startup>1</load-on-startup>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>DispatcherServlet</servlet-name>
-    <!-- url-pattern配置方式一: / 表示拦截所有请求 -->
-    <!--<url-pattern>/</url-pattern>-->
+    <servlet>
+        <servlet-name>dispatcherServlet</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:spring-web-mvc.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>dispatcherServlet</servlet-name>
+        <!-- url-pattern配置方式一: / 表示拦截所有请求 -->
+        <!--<url-pattern>/</url-pattern>-->
 
-    <!-- url-pattern配置方式二: 配置请求扩展名 -->
-    <!--
-      优点：
-        1. 使得xxx.css、xxx.js、xxx.png等等这样的静态资源不经过springMVC，不需要特殊处理。
-        2. 可以实现伪静态效果。表面看起来是一个html文件这样的静态资源，其实是Java处理后的页面。
-              伪静态作用1: 给黑客入侵增加难度
-              伪静态作用2: 有利于SEO优化(让百度、谷歌这样的搜索引擎更容易找到我们的项目)
+        <!-- url-pattern配置方式二: 配置请求扩展名 -->
+        <!--
+          优点：
+            1. 使得xxx.css、xxx.js、xxx.png等等这样的静态资源不经过springMVC，不需要特殊处理。
+            2. 可以实现伪静态效果。表面看起来是一个html文件这样的静态资源，其实是Java处理后的页面。
+                  伪静态作用1: 给黑客入侵增加难度
+                  伪静态作用2: 有利于SEO优化(让百度、谷歌这样的搜索引擎更容易找到我们的项目)
 
-      缺点：不符合RESTFUL风格
-    -->
-    <url-pattern>*.html</url-pattern>
-    <!-- 如果一个Ajax请求扩展名是html，但是实际服务器给浏览器返回的是json数据，二者不匹配会出现406。 -->
-    <!-- 为了让Ajax请求得到JSON格式的响应数据，需要另外配置一个json扩展名 -->
-    <url-pattern>*.json</url-pattern>
-  </servlet-mapping>
+          缺点：不符合RESTFUL风格
+        -->
+        <url-pattern>*.html</url-pattern>
+        <!-- 如果一个Ajax请求扩展名是html，但是实际服务器给浏览器返回的是json数据，二者不匹配会出现406。 -->
+        <!-- 为了让Ajax请求得到JSON格式的响应数据，需要另外配置一个json扩展名 -->
+        <url-pattern>*.json</url-pattern>
+    </servlet-mapping>
+
+    <!-- 配置SpringSecurity所需的过滤器DelegatingFilterProxy -->
+    <filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 </web-app>

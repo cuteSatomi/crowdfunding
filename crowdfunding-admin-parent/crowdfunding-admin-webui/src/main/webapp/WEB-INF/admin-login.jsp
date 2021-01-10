@@ -13,11 +13,11 @@
     <meta name="keys" content="">
     <meta name="author" content="">
     <base href="http://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.contextPath}">
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/font-awesome.min.css">
-    <link rel="stylesheet" href="css/login.css">
-    <script src="jquery/jquery-2.1.1.min.js"></script>
-    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/css/login.css">
+    <script src="/static/jquery/jquery-2.1.1.min.js"></script>
+    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
     <style>
 
     </style>
@@ -33,9 +33,10 @@
 
 <div class="container">
 
-    <form action="admin/do/login.html" method="post" class="form-signin" role="form">
+    <form action="security/do/login.html" method="post" class="form-signin" role="form">
         <h2 class="form-signin-heading"><i class="glyphicon glyphicon-log-in"></i> 管理员登陆</h2>
         <p>${requestScope.exception.message}</p>
+        <p>${SPRING_SECURITY_LAST_EXCEPTION.message}</p>
         <div class="form-group has-success has-feedback">
             <input type="text" value="zzx" name="loginAcct" class="form-control" id="inputSuccess4" placeholder="请输入登陆账号" autofocus>
             <span class="glyphicon glyphicon-user form-control-feedback"></span>

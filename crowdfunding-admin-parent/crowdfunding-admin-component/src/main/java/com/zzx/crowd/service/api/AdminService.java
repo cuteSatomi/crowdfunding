@@ -25,6 +25,8 @@ public interface AdminService {
 
     Admin getAdminByLoginAcct(String loginAcct, String userPswd);
 
+    Admin getAdminByLoginAcct(String loginAcct);
+
     /**
      * 分页查询
      * @param keyword 查询的关键字

@@ -49,4 +49,9 @@ public class AuthServiceImpl implements AuthService {
         }
 
     }
+
+    @Override
+    public List<String> getAssignAuthNameByAdminId(Integer adminId) {
+        return authMapper.selectAssignAuthNameByAdminId(adminId);
+    }
 }

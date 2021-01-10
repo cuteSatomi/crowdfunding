@@ -7,11 +7,11 @@
 <html lang="zh-CN">
 <!-- 引入封装的头部 -->
 <%@include file="/WEB-INF/include-head.jsp" %>
-<link rel="stylesheet" href="css/pagination.css"/>
-<script type="text/javascript" src="jquery/jquery.pagination.js"></script>
-<link rel="stylesheet" href="ztree/zTreeStyle.css">
-<script type="text/javascript" src="ztree/jquery.ztree.all-3.5.min.js"></script>
-<script type="text/javascript" src="crowd/my-role.js"></script>
+<link rel="stylesheet" href="/static/css/pagination.css"/>
+<script type="text/javascript" src="/static/jquery/jquery.pagination.js"></script>
+<link rel="stylesheet" href="/static/ztree/zTreeStyle.css">
+<script type="text/javascript" src="/static/ztree/jquery.ztree.all-3.5.min.js"></script>
+<script type="text/javascript" src="/static/crowd/my-role.js"></script>
 <script type="text/javascript">
 
     $(function () {

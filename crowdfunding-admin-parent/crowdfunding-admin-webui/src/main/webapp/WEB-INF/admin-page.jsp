@@ -8,8 +8,8 @@
 <html lang="zh-CN">
 <!-- 引入封装的头部 -->
 <%@include file="/WEB-INF/include-head.jsp" %>
-<link rel="stylesheet" href="css/pagination.css"/>
-<script type="text/javascript" src="jquery/jquery.pagination.js"></script>
+<link rel="stylesheet" href="/static/css/pagination.css"/>
+<script type="text/javascript" src="/static/jquery/jquery.pagination.js"></script>
 <body>
 <!-- 引入封装的nav -->
 <%@include file="/WEB-INF/include-nav.jsp" %>
