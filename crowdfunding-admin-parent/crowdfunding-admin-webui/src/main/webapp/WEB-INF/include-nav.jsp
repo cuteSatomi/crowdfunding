@@ -5,6 +5,8 @@
   抽取的后台管理页面的右上角
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<!-- 在页面上显示用户名，需要引入Spring Security的标签库 -->
+<%@taglib uri="http://www.springframework.org/security/tags" prefix="security"%>
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -15,7 +17,10 @@
                 <li style="padding-top:8px;">
                     <div class="btn-group">
                         <button type="button" class="btn btn-default btn-success dropdown-toggle" data-toggle="dropdown">
-                            <i class="glyphicon glyphicon-user"></i> ${sessionScope.loginAdmin.userName} <span class="caret"></span>
+                            <i class="glyphicon glyphicon-user"></i>
+                            ${sessionScope.loginAdmin.userName}
+                            <security:authentication property="principal.originalAdmin.userName"/>
+                            <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" role="menu">
                             <li><a href="#"><i class="glyphicon glyphicon-cog"></i> 个人设置</a></li>
