@@ -1,0 +1,30 @@
+server:
+  port: 2000    # 端口号
+
+spring:
+  # 微服务相关配置
+  application:
+    name: crowd-mysql
+  # mysql数据库相关配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql:///crowd?serverTimezone=UTC
+    username: root
+    password: 123
+
+# mybatis的xml文件扫描的配置
+mybatis:
+  mapper-locations: classpath*:/mybatis/mapper/*Mapper.xml
+
+# 日志的打印级别
+logging:
+  level:
+    com.zzx.crowd.mapper: debug
+    com.zzx.crowd.test: debug
+
+# eureka相关配置
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:1000/eureka

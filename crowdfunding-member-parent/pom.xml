@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.zzx.crowd</groupId>
+    <artifactId>crowdfunding-member-parent</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <modules>
+        <module>crowdfunding-member-eureka</module>
+        <module>crowdfunding-member-entity</module>
+        <module>crowdfunding-member-mysql-provider</module>
+        <module>crowdfunding-member-redis-provider</module>
+        <module>crowdfunding-member-authentication-consumer</module>
+        <module>crowdfunding-member-project-consumer</module>
+        <module>crowdfunding-member-order-consumer</module>
+        <module>crowdfunding-member-pay-consumer</module>
+        <module>crowdfunding-member-zuul</module>
+        <module>crowdfunding-member-api</module>
+    </modules>
+    <packaging>pom</packaging>
+
+    <!-- 在父工程中要管理的依赖 -->
+    <dependencyManagement>
+        <dependencies>
+            <!-- 导入SpringCloud所需要的依赖 -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>Greenwich.SR2</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- 导入SpringBoot所需要的依赖 -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>2.1.6.RELEASE</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- SpringBoot整合mybatis所需的依赖 -->
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>2.1.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
+                <version>1.0.5</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>
