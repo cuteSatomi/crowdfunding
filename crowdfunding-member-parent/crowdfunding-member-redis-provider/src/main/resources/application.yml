@@ -1,0 +1,17 @@
+server:
+  port: 3000
+
+spring:
+  application:
+    name: crowd-redis   # 微服务名称
+
+# eureka的一些配置
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:1000/eureka
+
+# ribbon的配置
+ribbon:
+  eureka:
+    enabled: true

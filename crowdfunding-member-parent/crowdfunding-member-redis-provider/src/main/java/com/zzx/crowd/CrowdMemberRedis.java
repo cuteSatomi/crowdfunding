@@ -5,11 +5,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * @author zzx
- * @date 2021-01-13 21:58
+ * @date 2021-01-14 11:43:53
  */
 @SpringBootApplication
-public class CrowdMainClass {
+public class CrowdMemberRedis {
     public static void main(String[] args) {
-        SpringApplication.run(CrowdMainClass.class, args);
+        SpringApplication.run(CrowdMemberRedis.class, args);
     }
 }

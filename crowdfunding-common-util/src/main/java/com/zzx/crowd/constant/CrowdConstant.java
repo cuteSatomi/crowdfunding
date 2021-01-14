@@ -16,4 +16,5 @@ public class CrowdConstant {
     public static final String MESSAGE_SYSTEM_ERROR_LOGINACCT_NOT_UNIQUE = " 系统错误，登录账号不唯一 ";
     public static final String MESSAGE_DELETE_FAILED = " 自己无法干掉自己 ";
     public static final String MESSAGE_ACCESS_DENIED = " 宁没有权限访问这个功能 ";
+    public static final String REDIS_VERIFY_CODE_PREFIX = "REDIS_VERIFY_CODE_";
 }

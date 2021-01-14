@@ -1,5 +1,7 @@
 package com.zzx.crowd.test;
 
+import com.zzx.crowd.entity.po.MemberPO;
+import com.zzx.crowd.mapper.MemberPOMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,6 +22,16 @@ public class MybatisTest {
 
     @Resource
     private DataSource dataSource;
+
+    @Resource
+    private MemberPOMapper memberPOMapper;
+
+    @Test
+    public void testMapper() {
+
+        MemberPO memberPO = new MemberPO(null, "zzx", "zzx", "蜘蛛侠", "zzx@hdsome.com", 1, 1, "赵忠祥", "zzz", 2);
+        memberPOMapper.insert(memberPO);
+    }
 
     @Test
     public void test() throws SQLException {

@@ -11,8 +11,8 @@ import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 // eureka的server端需要加@EnableEurekaServer 这个注解
 @EnableEurekaServer
 @SpringBootApplication
-public class CrowdMainClass {
+public class CrowdMemberEureka {
     public static void main(String[] args) {
-        SpringApplication.run(CrowdMainClass.class, args);
+        SpringApplication.run(CrowdMemberEureka.class, args);
     }
 }

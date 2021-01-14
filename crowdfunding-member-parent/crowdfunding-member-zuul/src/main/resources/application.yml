@@ -1,0 +1,19 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: crowd-zuul
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:1000/eureka
+
+zuul:
+  ignored-services: "*"   # 可以让原本可以通过微服务名称访问到微服务失效，即忽略原本微服务名称
+  sensitive-headers: "*"  # 在zuul向其他微服务重定向时保持原本头信息(请求头、响应头)
+  routes:
+    crowd-portal:
+      service-id: crowd-auth
+      path: /**

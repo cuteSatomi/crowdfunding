@@ -12,4 +12,23 @@
     <artifactId>crowdfunding-member-api</artifactId>
     <packaging>jar</packaging>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+        <!-- 需要返回ResultEntity，导入common依赖 -->
+        <dependency>
+            <groupId>com.zzx.crowd</groupId>
+            <artifactId>crowdfunding-common-util</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+        <!-- 需要依赖member实体类所在模块 -->
+        <dependency>
+            <groupId>com.zzx.crowd</groupId>
+            <artifactId>crowdfunding-member-entity</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
 </project>

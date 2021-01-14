@@ -1,7 +1,5 @@
 package com.zzx.crowd.util;
 
-import java.lang.reflect.Type;
-
 /**
  * 对返回的结果做一个统一的封装
  *
@@ -11,8 +9,8 @@ import java.lang.reflect.Type;
  */
 public class ResultEntity<T> {
 
-    private static final String SUCCESS = "SUCCESS";
-    private static final String FAILED = "FAILED";
+    public static final String SUCCESS = "SUCCESS";
+    public static final String FAILED = "FAILED";
 
     /**
      * 用于封装当前处理请求的结果是成功还是失败
