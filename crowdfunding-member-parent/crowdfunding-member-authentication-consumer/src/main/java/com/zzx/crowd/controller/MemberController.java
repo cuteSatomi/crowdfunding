@@ -6,6 +6,7 @@ import com.zzx.crowd.RedisRemoteService;
 import com.zzx.crowd.config.SmsProperties;
 import com.zzx.crowd.constant.CrowdConstant;
 import com.zzx.crowd.entity.po.MemberPO;
+import com.zzx.crowd.entity.vo.MemberLoginVO;
 import com.zzx.crowd.entity.vo.MemberVO;
 import com.zzx.crowd.util.NumberUtils;
 import com.zzx.crowd.util.ResultEntity;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpSession;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -41,7 +43,58 @@ public class MemberController {
     @Autowired
     private MySQLRemoteService mysqlRemoteService;
 
-    @RequestMapping("auth/do/member/register")
+    /**
+     * 退出登录
+     * @param session
+     * @return
+     */
+    @RequestMapping("auth/member/do/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/";
+    }
+
+    /**
+     * 登录接口
+     *
+     * @param loginacct
+     * @param userpswd
+     * @param modelMap
+     * @param session
+     * @return
+     */
+    @RequestMapping("auth/member/do/login")
+    public String login(@RequestParam("loginacct") String loginacct, @RequestParam("userpswd") String userpswd, ModelMap modelMap, HttpSession session) {
+        // 通过提交表单中的账号去查库看是否存在该账号
+        ResultEntity<MemberPO> resultEntity = mysqlRemoteService.getMemberPOByLoginAcctRemote(loginacct);
+        if (ResultEntity.FAILED.equals(resultEntity.getResult())) {
+            modelMap.addAttribute(CrowdConstant.ATTR_NAME_MESSAGE, resultEntity.getMessage());
+            return "member-login";
+        }
+        MemberPO memberPO = resultEntity.getData();
+        if (memberPO == null) {
+            modelMap.addAttribute(CrowdConstant.ATTR_NAME_MESSAGE, CrowdConstant.MESSAGE_LOGIN_FAILED);
+            return "member-login";
+        }
+
+        // 对比数据库中与表单提交的密码看是否一致
+        String passwordDataBase = memberPO.getUserpswd();
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        // 由于每次生成的密码是随机的，所以无法使用将表单的密码加密与数据库中的密码比对这种方法，BCryptPasswordEncoder提供了matches方法
+        boolean isMatch = passwordEncoder.matches(userpswd, passwordDataBase);
+        if (!isMatch) {
+            // 如果密码不正确，回到登录页面
+            modelMap.addAttribute(CrowdConstant.ATTR_NAME_MESSAGE, CrowdConstant.MESSAGE_LOGIN_FAILED);
+            return "member-login";
+        }
+        // 如果密码正确，则登录成功，将用户存储到session中
+        MemberLoginVO memberLoginVO = new MemberLoginVO(memberPO.getId(), memberPO.getUsername(), memberPO.getEmail());
+        session.setAttribute(CrowdConstant.ATTR_NAME_LOGIN_MEMBER, memberLoginVO);
+
+        return "redirect:/auth/member/to/center/page";
+    }
+
+    @RequestMapping("auth/member/do/register")
     public String register(MemberVO memberVO, ModelMap modelMap) {
         // 获取用户输入的手机号，从redis中读取该手机号对应的验证码
         String phoneNum = memberVO.getPhoneNum();

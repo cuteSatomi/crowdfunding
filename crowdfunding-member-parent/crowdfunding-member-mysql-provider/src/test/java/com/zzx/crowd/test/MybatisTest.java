@@ -5,6 +5,7 @@ import com.zzx.crowd.mapper.MemberPOMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
@@ -36,6 +37,7 @@ public class MybatisTest {
     @Test
     public void test() throws SQLException {
         Connection connection = dataSource.getConnection();
+        System.out.println(new BCryptPasswordEncoder().encode("zzx"));
         System.out.println(connection);
     }
 }
