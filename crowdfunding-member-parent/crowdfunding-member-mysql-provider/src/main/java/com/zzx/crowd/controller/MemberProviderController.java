@@ -1,11 +1,11 @@
 package com.zzx.crowd.controller;
 
+import com.zzx.crowd.constant.CrowdConstant;
 import com.zzx.crowd.entity.po.MemberPO;
 import com.zzx.crowd.service.MemberService;
 import com.zzx.crowd.util.ResultEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -19,8 +19,23 @@ public class MemberProviderController {
     @Resource
     private MemberService memberService;
 
+    @RequestMapping("save/member/remote")
+    public ResultEntity<String> saveMemberRemote(@RequestBody MemberPO memberPO) {
+        try {
+            memberService.saveMember(memberPO);
+            return ResultEntity.successWithoutData();
+        } catch (Exception e) {
+            if (e instanceof DuplicateKeyException) {
+                // 由于在数据库中添加了loginacct的唯一约束，如果是DuplicateKeyException异常，返回账号不唯一的响应结果
+                return ResultEntity.failed(CrowdConstant.MESSAGE_LOGIN_ACCOUNT_ALREADY_EXIST);
+            }
+        }
+        return null;
+    }
+
     /**
      * 调用本地service根据登录账号查询member
+     *
      * @param loginacct
      * @return
      */

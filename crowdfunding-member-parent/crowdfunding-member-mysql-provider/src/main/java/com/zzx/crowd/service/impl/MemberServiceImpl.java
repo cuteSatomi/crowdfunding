@@ -5,6 +5,7 @@ import com.zzx.crowd.entity.po.MemberPOExample;
 import com.zzx.crowd.mapper.MemberPOMapper;
 import com.zzx.crowd.service.MemberService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -27,5 +28,10 @@ public class MemberServiceImpl implements MemberService {
         criteria.andLoginacctEqualTo(loginacct);
         List<MemberPO> memberPOList = memberPOMapper.selectByExample(example);
         return memberPOList.get(0);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
+    public void saveMember(MemberPO memberPO) {
+        memberPOMapper.insertSelective(memberPO);
     }
 }

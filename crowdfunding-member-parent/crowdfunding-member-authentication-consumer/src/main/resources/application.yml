@@ -14,7 +14,12 @@ eureka:
 # 阿里云短信接口的配置
 crowd:
   sms:
-    accessKeyId: LTAI4G2cBfjaAVrQrmSmgbiT  # 自己的accessKeyId
-    accessKeySecret: mArtV6a9zP7cH3bI9XdM2Fi88s8ZdM  # 自己的accessKeySecret
+    accessKeyId: LTAI4G9B9C2AMGB2uEuzxUEe  # 自己的accessKeyId
+    accessKeySecret: msbaPM1IonpGNBcchjpgaBkRiVc5n6  # 自己的accessKeySecret
     signName: 乐优商城  # 签名名称
     verifyCodeTemplate: SMS_203672955  # 模板名称
+
+# 设置ribbon的超时时间
+ribbon:
+  ReadTimeout: 10000
+  ConnectTimeout: 1000
