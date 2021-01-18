@@ -6,6 +6,9 @@ spring:
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html
+  session:
+    store-type: redis
+
 eureka:
   client:
     service-url:

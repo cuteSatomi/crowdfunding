@@ -48,7 +48,7 @@ public class MemberController {
      * @param session
      * @return
      */
-    @RequestMapping("auth/member/do/logout")
+    @RequestMapping("/auth/member/do/logout")
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/";
@@ -63,7 +63,7 @@ public class MemberController {
      * @param session
      * @return
      */
-    @RequestMapping("auth/member/do/login")
+    @RequestMapping("/auth/member/do/login")
     public String login(@RequestParam("loginacct") String loginacct, @RequestParam("userpswd") String userpswd, ModelMap modelMap, HttpSession session) {
         // 通过提交表单中的账号去查库看是否存在该账号
         ResultEntity<MemberPO> resultEntity = mysqlRemoteService.getMemberPOByLoginAcctRemote(loginacct);
@@ -94,7 +94,7 @@ public class MemberController {
         return "redirect:/auth/member/to/center/page";
     }
 
-    @RequestMapping("auth/member/do/register")
+    @RequestMapping("/auth/member/do/register")
     public String register(MemberVO memberVO, ModelMap modelMap) {
         // 获取用户输入的手机号，从redis中读取该手机号对应的验证码
         String phoneNum = memberVO.getPhoneNum();
@@ -148,7 +148,7 @@ public class MemberController {
     }
 
     @ResponseBody
-    @RequestMapping("auth/member/send/verify/code.json")
+    @RequestMapping("/auth/member/send/verify/code.json")
     public ResultEntity<String> sendVerifyCode(@RequestParam("phoneNum") String phoneNum) throws ClientException {
         // 生成验证码
         String code = NumberUtils.generateCode(6);

@@ -4,6 +4,9 @@ server:
 spring:
   application:
     name: crowd-zuul
+  # 选用redis来开启session共享
+  session:
+    store-type: redis
 
 eureka:
   client:
