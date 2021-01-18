@@ -38,5 +38,14 @@
             <artifactId>crowdfunding-common-util</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
+        <!--
+            添加entity的依赖，反序列化需要entity的依赖，否则登陆成功后在member-center页面将无法从session中反序列化MemberLoginVO
+            抛出找不到类异常
+         -->
+        <dependency>
+            <groupId>com.zzx.crowd</groupId>
+            <artifactId>crowdfunding-member-entity</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 </project>

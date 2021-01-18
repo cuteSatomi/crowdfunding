@@ -51,7 +51,7 @@ public class MemberController {
     @RequestMapping("/auth/member/do/logout")
     public String logout(HttpSession session) {
         session.invalidate();
-        return "redirect:/";
+        return "redirect:http://localhost:8888/";
     }
 
     /**
@@ -91,7 +91,7 @@ public class MemberController {
         MemberLoginVO memberLoginVO = new MemberLoginVO(memberPO.getId(), memberPO.getUsername(), memberPO.getEmail());
         session.setAttribute(CrowdConstant.ATTR_NAME_LOGIN_MEMBER, memberLoginVO);
 
-        return "redirect:/auth/member/to/center/page";
+        return "redirect:http://localhost:8888/auth/member/to/center/page";
     }
 
     @RequestMapping("/auth/member/do/register")

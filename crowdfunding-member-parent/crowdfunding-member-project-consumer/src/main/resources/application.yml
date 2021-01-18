@@ -1,0 +1,27 @@
+server:
+  port: 5000
+
+spring:
+  application:
+    name: crowd-project
+
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+
+  session:
+    store-type: redis
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:1000/eureka
+
+# 阿里云OSS服务器相关配置
+aliyun:
+  oss:
+    access-key-id: zzx
+    access-key-secret: zzx
+    bucket-domain: zzx
+    bucket-name: zzx
+    end-point: zzx

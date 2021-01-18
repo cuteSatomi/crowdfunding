@@ -10,6 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 public class CrowdWebMvcConfig implements WebMvcConfigurer {
+    @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         // 浏览器访问的地址
         String urlPath = "/auth/member/to/reg/page";
@@ -18,5 +19,6 @@ public class CrowdWebMvcConfig implements WebMvcConfigurer {
         registry.addViewController(urlPath).setViewName(viewName);
         registry.addViewController("/auth/member/to/login/page").setViewName("member-login");
         registry.addViewController("/auth/member/to/center/page").setViewName("member-center");
+        registry.addViewController("/member/to/my/crowd").setViewName("member-crowd");
     }
 }

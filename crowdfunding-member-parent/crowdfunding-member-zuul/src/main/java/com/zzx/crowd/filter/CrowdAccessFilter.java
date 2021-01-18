@@ -18,15 +18,18 @@ import java.io.IOException;
  */
 @Component
 public class CrowdAccessFilter extends ZuulFilter {
+    @Override
     public String filterType() {
         // 在目标微服务前执行过滤
         return "pre";
     }
 
+    @Override
     public int filterOrder() {
         return 0;
     }
 
+    @Override
     public boolean shouldFilter() {
         RequestContext requestContext = RequestContext.getCurrentContext();
         HttpServletRequest request = requestContext.getRequest();
@@ -39,6 +42,7 @@ public class CrowdAccessFilter extends ZuulFilter {
         return !AccessPassResources.isStaticRequest(servletPath);
     }
 
+    @Override
     public Object run() throws ZuulException {
         RequestContext requestContext = RequestContext.getCurrentContext();
         HttpServletRequest request = requestContext.getRequest();
