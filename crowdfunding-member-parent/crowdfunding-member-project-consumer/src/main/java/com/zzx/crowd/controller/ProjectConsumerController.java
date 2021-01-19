@@ -3,12 +3,15 @@ package com.zzx.crowd.controller;
 import com.zzx.crowd.config.OssProperties;
 import com.zzx.crowd.constant.CrowdConstant;
 import com.zzx.crowd.entity.vo.ProjectVO;
+import com.zzx.crowd.entity.vo.ReturnVO;
 import com.zzx.crowd.util.CrowdUtil;
 import com.zzx.crowd.util.ResultEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
@@ -27,6 +30,64 @@ public class ProjectConsumerController {
     private OssProperties ossProperties;
 
     /**
+     * 提交保存所有回报信息
+     *
+     * @param returnVO
+     * @param session  需要从session中取回projectVO对象
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/create/save/return.json")
+    public ResultEntity<String> saveReturn(ReturnVO returnVO, HttpSession session) {
+        try {
+            ProjectVO projectVO = (ProjectVO) session.getAttribute(CrowdConstant.ATTR_NAME_TEMP_PROJECT);
+            if (projectVO == null) {
+                return ResultEntity.failed(CrowdConstant.MESSAGE_TEMP_PROJECT_MISSING);
+            }
+            // 得到returnVO对象集合
+            List<ReturnVO> returnVOList = projectVO.getReturnVOList();
+            // 判断returnVOList是否为null
+            if (returnVOList == null) {
+                // 如果returnVOList为null则现对其进行初始化
+                returnVOList = new ArrayList<ReturnVO>();
+                // 将初始化完成的returnVOList塞回projectVO
+                projectVO.setReturnVOList(returnVOList);
+            }
+            // 将收集了表单数据的returnVO对象存入集合
+            returnVOList.add(returnVO);
+
+            // 将projectVO重新设置回session
+            session.setAttribute(CrowdConstant.ATTR_NAME_TEMP_PROJECT, projectVO);
+            return ResultEntity.successWithoutData();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultEntity.failed(e.getMessage());
+        }
+    }
+
+    /**
+     * 回报中要上传的图片
+     *
+     * @param returnPicture
+     * @return
+     * @throws IOException
+     */
+    @ResponseBody
+    @RequestMapping("/create/upload/return/picture.json")
+    public ResultEntity<String> uploadReturnPicture(
+            @RequestParam("returnPicture") MultipartFile returnPicture) throws IOException {
+        ResultEntity<String> uploadReturnPicResultEntity = CrowdUtil.uploadFileToOss(
+                ossProperties.getEndPoint(),
+                ossProperties.getAccessKeyId(),
+                ossProperties.getAccessKeySecret(),
+                returnPicture.getInputStream(),
+                ossProperties.getBucketName(),
+                ossProperties.getBucketDomain(),
+                returnPicture.getOriginalFilename());
+        return uploadReturnPicResultEntity;
+    }
+
+    /**
      * @param projectVO         接收除了上传图片之外的数据
      * @param headerPicture     接收上传的头图
      * @param detailPictureList 接收上传详情图片
@@ -42,11 +103,9 @@ public class ProjectConsumerController {
         // 1.获取当前headerPicture对象是否为空
         boolean headerPictureIsEmpty = headerPicture.isEmpty();
 
-        if(headerPictureIsEmpty) {
-
+        if (headerPictureIsEmpty) {
             // 2.如果没有上传头图则返回到表单页面并显示错误消息
             modelMap.addAttribute(CrowdConstant.ATTR_NAME_MESSAGE, CrowdConstant.MESSAGE_HEADER_PIC_EMPTY);
-
             return "project-launch";
 
         }
@@ -63,18 +122,14 @@ public class ProjectConsumerController {
         String result = uploadHeaderPicResultEntity.getResult();
 
         // 4.判断头图是否上传成功
-        if(ResultEntity.SUCCESS.equals(result)) {
-
+        if (ResultEntity.SUCCESS.equals(result)) {
             // 5.如果成功则从返回的数据中获取图片访问路径
             String headerPicturePath = uploadHeaderPicResultEntity.getData();
-
             // 6.存入ProjectVO对象中
             projectVO.setHeaderPicturePath(headerPicturePath);
         } else {
-
             // 7.如果上传失败则返回到表单页面并显示错误消息
             modelMap.addAttribute(CrowdConstant.ATTR_NAME_MESSAGE, CrowdConstant.MESSAGE_HEADER_PIC_UPLOAD_FAILED);
-
             return "project-launch";
 
         }
@@ -84,21 +139,17 @@ public class ProjectConsumerController {
         List<String> detailPicturePathList = new ArrayList<String>();
 
         // 2.检查detailPictureList是否有效
-        if(detailPictureList == null || detailPictureList.size() == 0) {
+        if (detailPictureList == null || detailPictureList.size() == 0) {
             modelMap.addAttribute(CrowdConstant.ATTR_NAME_MESSAGE, CrowdConstant.MESSAGE_DETAIL_PIC_EMPTY);
-
             return "project-launch";
         }
 
         // 3.遍历detailPictureList集合
         for (MultipartFile detailPicture : detailPictureList) {
-
             // 4.当前detailPicture是否为空
-            if(detailPicture.isEmpty()) {
-
+            if (detailPicture.isEmpty()) {
                 // 5.检测到详情图片中单个文件为空也是回去显示错误消息
                 modelMap.addAttribute(CrowdConstant.ATTR_NAME_MESSAGE, CrowdConstant.MESSAGE_DETAIL_PIC_EMPTY);
-
                 return "project-launch";
             }
 
@@ -115,17 +166,13 @@ public class ProjectConsumerController {
             // 7.检查上传结果
             String detailUploadResult = detailUploadResultEntity.getResult();
 
-            if(ResultEntity.SUCCESS.equals(detailUploadResult)) {
-
+            if (ResultEntity.SUCCESS.equals(detailUploadResult)) {
                 String detailPicturePath = detailUploadResultEntity.getData();
-
                 // 8.收集刚刚上传的图片的访问路径
                 detailPicturePathList.add(detailPicturePath);
             } else {
-
                 // 9.如果上传失败则返回到表单页面并显示错误消息
                 modelMap.addAttribute(CrowdConstant.ATTR_NAME_MESSAGE, CrowdConstant.MESSAGE_DETAIL_PIC_UPLOAD_FAILED);
-
                 return "project-launch";
             }
 

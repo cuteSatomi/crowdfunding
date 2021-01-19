@@ -25,6 +25,7 @@ public class CrowdConstant {
     public static final String MESSAGE_HEADER_PIC_EMPTY = " 头图为空 ";
     public static final String MESSAGE_DETAIL_PIC_EMPTY = " 详情图为空 ";
     public static final String MESSAGE_DETAIL_PIC_UPLOAD_FAILED = " 详情图上传失败 ";
+    public static final String MESSAGE_TEMP_PROJECT_MISSING = " 临时存储的project对象丢失 ";
 
     public static final String REDIS_VERIFY_CODE_PREFIX = "REDIS_VERIFY_CODE_";
 }
