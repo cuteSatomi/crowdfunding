@@ -20,3 +20,6 @@ zuul:
     crowd-portal:
       service-id: crowd-auth
       path: /**
+    crowd-project:
+      service-id: crowd-project
+      path: /project/**
