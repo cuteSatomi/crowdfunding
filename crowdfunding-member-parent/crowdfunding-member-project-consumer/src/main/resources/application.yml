@@ -20,8 +20,8 @@ eureka:
 # 阿里云OSS服务器相关配置
 aliyun:
   oss:
-    access-key-id: LTAI4GFBGZ5XvB8F8fUKkU4y
-    access-key-secret: 8qbDQJjjFt1Wck8jnqdyXpm0BnCxoC
+    access-key-id: zzx
+    access-key-secret: zzx
     bucket-domain: http://zzxcrowd210118.oss-cn-shanghai.aliyuncs.com
     bucket-name: zzxcrowd210118
     end-point: http://oss-cn-shanghai.aliyuncs.com

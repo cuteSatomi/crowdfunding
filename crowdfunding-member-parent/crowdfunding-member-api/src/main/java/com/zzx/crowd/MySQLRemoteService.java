@@ -1,6 +1,7 @@
 package com.zzx.crowd;
 
 import com.zzx.crowd.entity.po.MemberPO;
+import com.zzx.crowd.entity.vo.ProjectVO;
 import com.zzx.crowd.util.ResultEntity;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
@@ -31,5 +32,8 @@ public interface MySQLRemoteService {
      * @return
      */
     @RequestMapping("get/memberpo/by/login/acct/remote")
-    ResultEntity<MemberPO> getMemberPOByLoginAcctRemote(@RequestParam("loginacct") String loginacct);
+    public ResultEntity<MemberPO> getMemberPOByLoginAcctRemote(@RequestParam("loginacct") String loginacct);
+
+    @RequestMapping("/save/project/vo/remote")
+    public ResultEntity<String> saveProjectVORemote(@RequestBody ProjectVO projectVO,@RequestParam("memberId") Integer memberId);
 }

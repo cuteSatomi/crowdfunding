@@ -1,7 +1,10 @@
 package com.zzx.crowd.controller;
 
+import com.zzx.crowd.MySQLRemoteService;
 import com.zzx.crowd.config.OssProperties;
 import com.zzx.crowd.constant.CrowdConstant;
+import com.zzx.crowd.entity.vo.MemberConfirmInfoVO;
+import com.zzx.crowd.entity.vo.MemberLoginVO;
 import com.zzx.crowd.entity.vo.ProjectVO;
 import com.zzx.crowd.entity.vo.ReturnVO;
 import com.zzx.crowd.util.CrowdUtil;
@@ -28,6 +31,40 @@ public class ProjectConsumerController {
 
     @Autowired
     private OssProperties ossProperties;
+
+    @Autowired
+    private MySQLRemoteService mySQLRemoteService;
+
+    @RequestMapping("/create/confirm")
+    public String saveConfirm(ModelMap modelMap, HttpSession session, MemberConfirmInfoVO memberConfirmInfoVO) {
+        // 从session中取回临时存储的projectVO对象
+        ProjectVO projectVO = (ProjectVO) session.getAttribute(CrowdConstant.ATTR_NAME_TEMP_PROJECT);
+        if (projectVO == null) {
+            throw new RuntimeException(CrowdConstant.MESSAGE_TEMP_PROJECT_MISSING);
+        }
+        // 将表单提交的确认信息存储到projectVO对象中
+        projectVO.setMemberConfirmInfoVO(memberConfirmInfoVO);
+
+        // 从session中获取当前登录的member，需要获取他的id
+        MemberLoginVO memberLoginVO = (MemberLoginVO) session.getAttribute(CrowdConstant.ATTR_NAME_LOGIN_MEMBER);
+
+        Integer memberId = memberLoginVO.getId();
+        // 调用远程方法保存projectVO对象
+        ResultEntity<String> saveResultEntity = mySQLRemoteService.saveProjectVORemote(projectVO, memberId);
+
+        // 判断远程的保存操作是否成功
+        String result = saveResultEntity.getResult();
+        if(ResultEntity.FAILED.equals(result)) {
+            modelMap.addAttribute(CrowdConstant.ATTR_NAME_MESSAGE, saveResultEntity.getMessage());
+            return "project-confirm";
+        }
+
+        // 将临时的ProjectVO对象从Session域移除
+        session.removeAttribute(CrowdConstant.ATTR_NAME_TEMP_PROJECT);
+
+        // 如果远程保存成功则跳转到最终完成页面
+        return "redirect:http://localhost:8888/project/create/success";
+    }
 
     /**
      * 提交保存所有回报信息

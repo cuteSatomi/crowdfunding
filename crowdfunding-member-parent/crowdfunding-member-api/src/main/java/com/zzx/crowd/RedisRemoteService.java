@@ -23,7 +23,7 @@ public interface RedisRemoteService {
      * @return
      */
     @RequestMapping("/set/redis/key/value/remote")
-    ResultEntity<String> setRedisKeyValueRemote(
+    public ResultEntity<String> setRedisKeyValueRemote(
             @RequestParam("key") String key,
             @RequestParam("value") String value);
 
@@ -36,7 +36,7 @@ public interface RedisRemoteService {
      * @return
      */
     @RequestMapping("/set/redis/key/value/remote/with/timeout")
-    ResultEntity<String> setRedisKeyValueRemoteWithTimeout(
+    public ResultEntity<String> setRedisKeyValueRemoteWithTimeout(
             @RequestParam("key") String key,
             @RequestParam("value") String value,
             @RequestParam("time") long time,
@@ -48,7 +48,7 @@ public interface RedisRemoteService {
      * @return
      */
     @RequestMapping("/get/redis/string/value/by/key/remote")
-    ResultEntity<String> getRedisStringValueByKeyRemote(@RequestParam("key")String key);
+    public ResultEntity<String> getRedisStringValueByKeyRemote(@RequestParam("key")String key);
 
     /**
      * 根据所给的key删除redis缓存的远程接口
@@ -56,5 +56,5 @@ public interface RedisRemoteService {
      * @return
      */
     @RequestMapping("/remove/redis/key/remote")
-    ResultEntity<String> removeRedisKeyRemote(@RequestParam("key")String key);
+    public ResultEntity<String> removeRedisKeyRemote(@RequestParam("key")String key);
 }
